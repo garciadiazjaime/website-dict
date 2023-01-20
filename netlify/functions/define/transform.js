@@ -6,7 +6,7 @@ const transform = function (html) {
   const response = $("#article .entry li")
     .toArray()
     .map((item) => $(item).text());
-console.log({response})
+
   return response;
 };
 
