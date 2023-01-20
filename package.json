@@ -1,0 +1,17 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "base-64": "^1.0.0",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.0.3",
+    "next": "latest",
+    "node-fetch": "^2.6.8",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  }
+}
