@@ -10,14 +10,17 @@ exports.handler = async function (event, context) {
       body: "EMPTY_WORD",
     };
   }
-  let response;
 
-  try {
-    response = await extract(word);
-  } catch (error) {
+  const response = await extract(word)
+    .then((response) => response)
+    .catch((error) => {
+      console.log(error);
+    });
+
+  if (!response) {
     return {
       statusCode: 400,
-      body: JSON.stringify(error),
+      body: "SERVICE_ERROR",
     };
   }
 
