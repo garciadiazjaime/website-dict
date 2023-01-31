@@ -39,7 +39,7 @@ const getSpanisDefinition = async (word) => {
         console.log("request was aborted");
       }
     })
-    .finnaly(() => {
+    .then(() => {
       clearInterval(timeout);
     });
   console.log("response found");
