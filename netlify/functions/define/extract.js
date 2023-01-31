@@ -1,3 +1,4 @@
+const https = require("https");
 const fetch = require("node-fetch");
 const base64 = require("base-64");
 
@@ -7,11 +8,25 @@ const getSpanisDefinition = async (word) => {
   const cert = base64.decode(`${process.env.MINT_CERT_A}${MINT_CERT_B}`);
   console.log({ cert });
 
+  const options = {
+    cert,
+    key: cert,
+  };
+
+  const sslConfiguredAgent = new https.Agent(options);
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 3000);
+
   const headers = {};
   const endpointURL = `https://www.wordreference.com/definicion/${word}`;
   console.log({ endpointURL });
   const response = await fetch(endpointURL, {
+    signal: controller.signal,
     headers,
+    agent: sslConfiguredAgent,
     method: "get",
   })
     .then((resp) => {
@@ -20,6 +35,12 @@ const getSpanisDefinition = async (word) => {
     })
     .catch((error) => {
       console.log("fail", error);
+      if (error instanceof AbortError) {
+        console.log("request was aborted");
+      }
+    })
+    .finnaly(() => {
+      clearInterval(timeout);
     });
   console.log("response found");
 
@@ -27,9 +48,6 @@ const getSpanisDefinition = async (word) => {
 };
 
 const extract = async function (word, lang) {
-  const response = await fetch("https://cat-fact.herokuapp.com/facts").then(resp => resp.text());
-  console.log("cat", { response });
-
   if (lang.toUpperCase() === "ES") {
     return getSpanisDefinition(word);
   }
