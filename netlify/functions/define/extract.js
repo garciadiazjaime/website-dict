@@ -15,9 +15,7 @@ const getSpanisDefinition = async (word) => {
 
   const sslConfiguredAgent = new https.Agent(options);
 
-  const headers = {
-    "Content-Type": "application/json",
-  };
+  const headers = {};
   const endpointURL = `https://www.wordreference.com/definicion/${word}`;
   console.log({ endpointURL });
   const response = await fetch(endpointURL, {
@@ -25,16 +23,23 @@ const getSpanisDefinition = async (word) => {
     agent: sslConfiguredAgent,
     method: "get",
   })
-    .then((resp) => resp.text())
+    .then((resp) => {
+      console.log("response!");
+      return resp.text();
+    })
     .catch((error) => {
       console.log("fail", error);
     });
+  console.log("response found");
 
   return response;
 };
 
 const extract = async function (word, lang) {
-  if (lang === "ES") {
+  const response = await fetch("https://cat-fact.herokuapp.com/facts");
+  console.log("cat", { response });
+
+  if (lang.toUpperCase() === "ES") {
     return getSpanisDefinition(word);
   }
 
