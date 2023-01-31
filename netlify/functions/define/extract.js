@@ -1,4 +1,3 @@
-const https = require("https");
 const fetch = require("node-fetch");
 const base64 = require("base-64");
 
@@ -8,19 +7,11 @@ const getSpanisDefinition = async (word) => {
   const cert = base64.decode(`${process.env.MINT_CERT_A}${MINT_CERT_B}`);
   console.log({ cert });
 
-  const options = {
-    cert,
-    key: cert,
-  };
-
-  const sslConfiguredAgent = new https.Agent(options);
-
   const headers = {};
   const endpointURL = `https://www.wordreference.com/definicion/${word}`;
   console.log({ endpointURL });
   const response = await fetch(endpointURL, {
     headers,
-    agent: sslConfiguredAgent,
     method: "get",
   })
     .then((resp) => {
@@ -36,7 +27,7 @@ const getSpanisDefinition = async (word) => {
 };
 
 const extract = async function (word, lang) {
-  const response = await fetch("https://cat-fact.herokuapp.com/facts");
+  const response = await fetch("https://cat-fact.herokuapp.com/facts").then(resp => resp.text());
   console.log("cat", { response });
 
   if (lang.toUpperCase() === "ES") {
