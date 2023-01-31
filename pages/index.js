@@ -38,6 +38,16 @@ export default function Home() {
       </Head>
 
       <main>
+        <div>
+          <input type="radio" value="ES" checked/>
+          ES
+
+          <input type="radio" value="EN"/>
+          EN
+
+          <input type="radio" value="FR"/>
+          FR
+        </div>
         <input
           type="text"
           name="term"
