@@ -15,39 +15,25 @@ const getSpanisDefinition = async (word) => {
 
   const sslConfiguredAgent = new https.Agent(options);
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => {
-    controller.abort();
-  }, 3000);
-
   const headers = {};
   const endpointURL = `https://www.wordreference.com/definicion/${word}`;
   console.log({ endpointURL });
   const response = await fetch(endpointURL, {
-    signal: controller.signal,
     headers,
     agent: sslConfiguredAgent,
     method: "get",
   })
-    .then((resp) => {
-      console.log("response!");
-      return resp.text();
-    })
+    .then((resp) => resp.text())
     .catch((error) => {
       console.log("fail", error);
-      if (error instanceof AbortError) {
-        console.log("request was aborted");
-      }
-    })
-    .then(() => {
-      clearInterval(timeout);
     });
-  console.log("response found");
+
+  console.log("response found", !!response);
 
   return response;
 };
 
-const extract = async function (word, lang) {
+const extract = function (word, lang) {
   if (lang.toUpperCase() === "ES") {
     return getSpanisDefinition(word);
   }

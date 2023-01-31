@@ -47,10 +47,28 @@ export default function Home() {
       </Head>
 
       <main>
-        <div onChange={onLangChange} className="lang">
-          <input type="radio" value="ES" checked={lang === "ES"} /> ES
-          <input type="radio" value="EN" checked={lang === "EN"} /> EN
-          <input type="radio" value="FR" checked={lang === "FR"} /> FR
+        <div className="lang">
+          <input
+            type="radio"
+            value="ES"
+            checked={lang === "ES"}
+            onChange={onLangChange}
+          />{" "}
+          ES
+          <input
+            type="radio"
+            value="EN"
+            checked={lang === "EN"}
+            onChange={onLangChange}
+          />{" "}
+          EN
+          <input
+            type="radio"
+            value="FR"
+            checked={lang === "FR"}
+            onChange={onLangChange}
+          />{" "}
+          FR
         </div>
         <input
           type="text"
