@@ -1,3 +1,4 @@
+const https = require("https");
 const fetch = require("node-fetch");
 const base64 = require("base-64");
 
@@ -13,14 +14,17 @@ const extract = async function (word) {
     key: cert,
   };
 
+  const sslConfiguredAgent = new https.Agent(options);
+
   const headers = {
     "Content-Type": "application/json",
   };
   const endpointURL = `https://www.wordreference.com/definicion/${word}`;
-  console.log(endpointURL);
 
+  console.log("go");
   const response = await fetch(endpointURL, {
     headers,
+    agent: sslConfiguredAgent,
     method: "get",
   })
     .then((resp) => resp.text())
