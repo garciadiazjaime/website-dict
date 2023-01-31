@@ -49,8 +49,8 @@ export default function Home() {
 
         <div>
           <ul>
-            {definitions.map((definition) => (
-              <li>{definition}</li>
+            {definitions.map((definition, index) => (
+              <li key={`key_${index}`}>{definition}</li>
             ))}
           </ul>
         </div>
