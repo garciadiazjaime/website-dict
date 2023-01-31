@@ -2,16 +2,16 @@ const { extract } = require("./extract");
 const { transform } = require("./transform");
 
 exports.handler = async function (event, context) {
-  const { word } = event.queryStringParameters;
+  const { word, lang } = event.queryStringParameters;
 
-  if (!word) {
+  if (!word || !lang) {
     return {
       statusCode: 400,
-      body: "EMPTY_WORD",
+      body: "EMPTY_PARAMS",
     };
   }
 
-  const response = await extract(word)
+  const response = await extract(word, lang)
     .then((response) => response)
     .catch((error) => {
       console.log(error);
