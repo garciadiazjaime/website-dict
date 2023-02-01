@@ -1,5 +1,20 @@
 const { spanishETL } = require("./spanish-etl");
 const { englishETL } = require("./english-etl");
+const { frenchETL } = require("./french-etl");
+
+const getDefinition = (word, lang) => {
+  if (lang === "ES") {
+    return spanishETL(word);
+  }
+
+  if (lang === "EN") {
+    return englishETL(word);
+  }
+
+  if (lang === "FR") {
+    return frenchETL(word);
+  }
+};
 
 exports.handler = async function (event, context) {
   const { word, lang } = event.queryStringParameters;
@@ -11,27 +26,16 @@ exports.handler = async function (event, context) {
     };
   }
 
-  let response;
-
-  if (lang?.toUpperCase() === "ES") {
-    response = await spanishETL(word).catch((error) => {
+  const definition = await getDefinition(word, lang.toUpperCase()).catch(
+    (error) => {
       console.log(error);
-    });
-  }
+    }
+  );
 
-  if (lang?.toUpperCase() === "EN") {
-    response = await englishETL(word)
-      .then((response) => response)
-      .catch((error) => {
-        console.log(error);
-      });
-    console.log({ response });
-  }
-
-  if (!response) {
+  if (!definition) {
     return {
       statusCode: 400,
-      body: "SERVICE_ERROR",
+      body: "DEFINITION_NOT_FOUND",
     };
   }
 
@@ -40,6 +44,6 @@ exports.handler = async function (event, context) {
     headers: {
       "content-type": "application/json; charset=utf-8",
     },
-    body: JSON.stringify(response),
+    body: JSON.stringify(definition),
   };
 };
