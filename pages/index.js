@@ -3,6 +3,7 @@ import { useRef, useState, useEffect } from "react";
 
 import styles from "../styles/Home.module.css";
 import Loader from "../components/loader";
+import { defineWord, saveWord } from "../support/lambda-service";
 
 export default function Home() {
   const [definitions, setDefinitions] = useState([]);
@@ -14,9 +15,12 @@ export default function Home() {
     setLoading(true);
     setDefinitions([]);
 
-    await fetch(`/.netlify/functions/define?word=${word}&lang=${lang}`)
-      .then((resp) => resp.json())
-      .then((results) => setDefinitions(results))
+    await defineWord(word, lang)
+      .then((results) => {
+        setDefinitions(results);
+        return results;
+      })
+      .then((results) => saveWord(word, lang, results))
       .catch((error) => {
         console.log(error);
       })
@@ -37,11 +41,11 @@ export default function Home() {
 
   const init = () => {
     inputEl.current.focus();
-  }
+  };
 
   useEffect(() => {
-    init()
-  })
+    init();
+  });
 
   return (
     <div className={styles.container}>
