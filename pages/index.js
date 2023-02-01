@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import styles from "../styles/Home.module.css";
 import Loader from "../components/loader";
@@ -34,6 +34,14 @@ export default function Home() {
   const onLangChange = (event) => {
     setLang(event.target.value);
   };
+
+  const init = () => {
+    inputEl.current.focus();
+  }
+
+  useEffect(() => {
+    init()
+  })
 
   return (
     <div className={styles.container}>
