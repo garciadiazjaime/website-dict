@@ -6,6 +6,7 @@ import Loader from "../components/loader";
 import { defineWord, saveWord } from "../support/lambda-service";
 
 export default function Home() {
+  const [word, setWord] = useState("");
   const [definitions, setDefinitions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [lang, setLang] = useState("ES");
@@ -16,11 +17,7 @@ export default function Home() {
     setDefinitions([]);
 
     await defineWord(word, lang)
-      .then((results) => {
-        setDefinitions(results);
-        return results;
-      })
-      .then((results) => saveWord(word, lang, results))
+      .then((results) => setDefinitions(results))
       .catch((error) => {
         console.log(error);
       })
@@ -39,13 +36,27 @@ export default function Home() {
     setLang(event.target.value);
   };
 
+  const onWordChange = (event) => {
+    setWord(event.target.value);
+  };
+
+  const saveWordHelper = async () => {
+    if (Array.isArray(definitions) && definitions.length) {
+      await saveWord(word, lang, definitions);
+    }
+  };
+
   const init = () => {
     inputEl.current.focus();
   };
 
   useEffect(() => {
+    saveWordHelper();
+  }, [definitions]);
+
+  useEffect(() => {
     init();
-  });
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -86,6 +97,8 @@ export default function Home() {
           type="text"
           name="term"
           onKeyDown={handleKeyDown}
+          value={word}
+          onChange={onWordChange}
           ref={inputEl}
         />
 
