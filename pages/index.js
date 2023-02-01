@@ -9,7 +9,7 @@ export default function Home() {
   const [word, setWord] = useState("");
   const [definitions, setDefinitions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [lang, setLang] = useState("ES");
+  const [lang, setLang] = useState("es");
   const inputEl = useRef(null);
 
   const searchWord = async (word, lang) => {
@@ -73,22 +73,22 @@ export default function Home() {
         <div className="lang">
           <input
             type="radio"
-            value="ES"
-            checked={lang === "ES"}
+            value="es"
+            checked={lang === "es"}
             onChange={onLangChange}
           />{" "}
           ES
           <input
             type="radio"
-            value="EN"
-            checked={lang === "EN"}
+            value="en"
+            checked={lang === "en"}
             onChange={onLangChange}
           />{" "}
           EN
           <input
             type="radio"
-            value="FR"
-            checked={lang === "FR"}
+            value="fr"
+            checked={lang === "fr"}
             onChange={onLangChange}
           />{" "}
           FR
